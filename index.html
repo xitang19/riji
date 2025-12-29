@@ -7,113 +7,113 @@
     <style>
         :root {
             --primary: #a8dadc;
-            --bg: #f8f9fa;
+            --bg: #f0f2f5;
             --text: #457b9d;
-            --card-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            --card-shadow: 0 10px 30px rgba(0,0,0,0.08);
         }
 
         body { 
             font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; 
             background-color: var(--bg); 
-            margin: 0; padding: 40px 20px;
+            margin: 0; padding: 20px;
             display: flex; flex-direction: column; align-items: center; 
             color: #333;
         }
 
-        /* 顶部标签栏 - 类似 Excel 的工作表 */
+        /* 顶部页签 */
         .tab-bar {
-            display: flex; gap: 10px; margin-bottom: 20px; width: 100%; max-width: 800px;
-            overflow-x: auto; padding: 10px 0;
+            display: flex; gap: 8px; margin-bottom: 15px; width: 100%; max-width: 950px;
+            overflow-x: auto; padding: 5px;
         }
         .tab {
-            padding: 8px 20px; background: white; border-radius: 20px;
-            cursor: pointer; box-shadow: var(--card-shadow); font-size: 14px;
-            white-space: nowrap; transition: 0.3s; border: 2px solid transparent;
+            padding: 6px 15px; background: #e0e0e0; border-radius: 15px;
+            cursor: pointer; font-size: 13px; color: #666; transition: 0.3s;
         }
-        .tab.active { background: var(--primary); color: white; font-weight: bold; }
-        .add-tab { background: #eee; font-weight: bold; }
+        .tab.active { background: var(--text); color: white; }
 
-        /* 主容器 */
-        #title { 
-            font-size: 32px; font-weight: bold; margin-bottom: 30px; 
-            border: none; background: transparent; text-align: center; 
-            color: var(--text); outline: none; width: 100%;
-        }
-
+        /* 主容器：像一张白纸 */
         .main-container { 
-            display: flex; flex-wrap: wrap; gap: 40px; 
-            background: white; padding: 40px; border-radius: 24px; 
-            box-shadow: var(--card-shadow); justify-content: center;
+            background: white; 
+            padding: 50px; 
+            border-radius: 12px; 
+            box-shadow: var(--card-shadow);
+            display: flex;
+            flex-direction: column; /* 纵向排列标题和下方内容 */
+            align-items: center;
+            min-width: 800px;
         }
 
-        /* 网格美化 */
-        .grid-wrapper { display: grid; grid-template-columns: 35px repeat(12, 25px); gap: 4px; }
+        /* 标题在白纸内部 */
+        #title { 
+            font-size: 28px; font-weight: bold; margin-bottom: 40px; 
+            border: none; background: transparent; text-align: center; 
+            color: #333; outline: none; width: 100%;
+            border-bottom: 1px dashed #eee; padding-bottom: 10px;
+        }
+
+        /* 内容布局：表格与图例横向排列 */
+        .content-layout {
+            display: flex;
+            flex-direction: row;
+            align-items: center; /* 关键：让右侧图例垂直居中于表格 */
+            gap: 50px; /* 表格与图例的间距 */
+        }
+
+        /* 网格 */
+        .grid-wrapper { display: grid; grid-template-columns: 30px repeat(12, 22px); gap: 4px; }
         .cell { 
-            width: 25px; height: 25px; border: 1px solid #f0f0f0; 
-            background-color: #fff; cursor: pointer; border-radius: 4px; 
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 22px; height: 22px; border: 1px solid #f0f0f0; 
+            background-color: #fff; cursor: pointer; border-radius: 3px; 
         }
-        .cell:hover { transform: scale(1.2); box-shadow: 0 4px 8px rgba(0,0,0,0.1); z-index: 10; }
-        .header-cell { font-size: 10px; display: flex; align-items: center; justify-content: center; color: #bbb; font-weight: bold; }
+        .header-cell { font-size: 10px; display: flex; align-items: center; justify-content: center; color: #ccc; }
 
-        /* 图例美化 */
-        .legend { display: flex; flex-direction: column; gap: 20px; min-width: 180px; }
+        /* 右侧图例 */
+        .legend { 
+            display: flex; flex-direction: column; gap: 15px; 
+            padding: 20px; border-left: 1px solid #f9f9f9;
+        }
         .legend-item { display: flex; align-items: center; gap: 12px; }
         .color-picker { 
-            width: 32px; height: 32px; border: none; padding: 0; 
-            cursor: pointer; border-radius: 50%; overflow: hidden;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            width: 24px; height: 24px; border: none; padding: 0; 
+            cursor: pointer; border-radius: 4px; 
         }
         .legend-text { 
-            border: none; border-bottom: 1px solid #eee; outline: none; 
-            font-size: 15px; padding: 4px; width: 100px; color: #666;
+            border: none; border-bottom: 1px solid #f0f0f0; outline: none; 
+            font-size: 14px; width: 80px; color: #444;
         }
-        .active-legend { transform: scale(1.2); outline: 2px solid var(--text); outline-offset: 3px; }
+        .active-legend { transform: scale(1.2); box-shadow: 0 0 0 2px #333; }
 
-        .btn-group { margin-top: 40px; display: flex; gap: 15px; }
-        .btn { 
-            padding: 10px 24px; border-radius: 12px; border: none; 
-            cursor: pointer; font-size: 14px; transition: 0.3s;
+        .btn-delete { 
+            margin-top: 30px; padding: 8px 20px; border-radius: 8px; 
+            border: none; background: #fff1f0; color: #ff4d4f; cursor: pointer;
         }
-        .btn-delete { background: #ffeded; color: #ff7675; }
-        .btn-delete:hover { background: #ff7675; color: white; }
     </style>
 </head>
 <body>
 
-    <div class="tab-bar" id="tabBar">
-        </div>
-
-    <input type="text" id="title" placeholder="给这一页起个名字..." oninput="updateCurrentPageTitle()">
+    <div class="tab-bar" id="tabBar"></div>
 
     <div class="main-container">
-        <div id="pixelGrid" class="grid-wrapper"></div>
+        <input type="text" id="title" placeholder="这一页的标题..." oninput="updateCurrentPageTitle()">
 
-        <div class="legend" id="legend">
-            <div style="font-weight: bold; color: #999; margin-bottom: 5px;">图例设置</div>
-            </div>
+        <div class="content-layout">
+            <div id="pixelGrid" class="grid-wrapper"></div>
+
+            <div class="legend" id="legend">
+                </div>
+        </div>
     </div>
 
-    <div class="btn-group">
-        <button class="btn btn-delete" onclick="deleteCurrentPage()">删除当前页</button>
-    </div>
+    <button class="btn-delete" onclick="deleteCurrentPage()">删除此页</button>
 
     <script>
-        // --- 数据结构说明 ---
-        // pages = [ {title: "", colors: [], texts: [], cells: {}}, ... ]
-        let pages = JSON.parse(localStorage.getItem('pixelAppData')) || [createNewPageObject("第一页")];
+        let pages = JSON.parse(localStorage.getItem('pixelAppData')) || [createNewPageObject("2024 年度心情追踪")];
         let activeIdx = 0;
         let currentColor = "";
 
         const grid = document.getElementById('pixelGrid');
         const tabBar = document.getElementById('tabBar');
         const legendContainer = document.getElementById('legend');
-
-        // 1. 初始化
-        function init() {
-            renderTabs();
-            renderPage();
-        }
 
         function createNewPageObject(title) {
             return {
@@ -124,36 +124,33 @@
             };
         }
 
-        // 2. 渲染标签栏
+        function init() {
+            renderTabs();
+            renderPage();
+        }
+
         function renderTabs() {
             tabBar.innerHTML = '';
             pages.forEach((page, index) => {
                 const tab = document.createElement('div');
                 tab.className = `tab ${index === activeIdx ? 'active' : ''}`;
-                tab.innerText = page.title || `未命名 ${index + 1}`;
+                tab.innerText = page.title || `未命名`;
                 tab.onclick = () => { activeIdx = index; renderPage(); renderTabs(); };
                 tabBar.appendChild(tab);
             });
             const addBtn = document.createElement('div');
-            addBtn.className = 'tab add-tab';
-            addBtn.innerText = '+ 新增页';
-            addBtn.onclick = addNewPage;
+            addBtn.className = 'tab';
+            addBtn.style.background = "#ddd";
+            addBtn.innerText = '+';
+            addBtn.onclick = () => { pages.push(createNewPageObject("新页面")); activeIdx = pages.length-1; saveAndRefresh(); };
             tabBar.appendChild(addBtn);
         }
 
-        function addNewPage() {
-            pages.push(createNewPageObject("新页面"));
-            activeIdx = pages.length - 1;
-            saveAndRefresh();
-        }
-
-        // 3. 渲染当前页面内容
         function renderPage() {
             const page = pages[activeIdx];
             document.getElementById('title').value = page.title;
             
-            // 渲染图例
-            legendContainer.innerHTML = '<div style="font-weight: bold; color: #999; margin-bottom: 5px;">图例设置</div>';
+            legendContainer.innerHTML = '<div style="font-size:12px; color:#999; margin-bottom:10px;">图例</div>';
             page.legendColors.forEach((color, i) => {
                 const item = document.createElement('div');
                 item.className = 'legend-item';
@@ -167,7 +164,6 @@
                 if(i===0) currentColor = color;
             });
 
-            // 渲染网格
             const months = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
             grid.innerHTML = `<div class="header-cell"></div>`;
             months.forEach(m => grid.innerHTML += `<div class="header-cell">${m}</div>`);
@@ -182,19 +178,6 @@
             }
         }
 
-        // 4. 数据操作
-        function updateCurrentPageTitle() {
-            pages[activeIdx].title = document.getElementById('title').value;
-            localStorage.setItem('pixelAppData', JSON.stringify(pages));
-            renderTabs(); // 实时更新标签名
-        }
-
-        function updateLegendData(index, type, value) {
-            if(type === 'color') pages[activeIdx].legendColors[index] = value;
-            else pages[activeIdx].legendTexts[index] = value;
-            saveToLocal();
-        }
-
         function selectColor(el) {
             currentColor = el.value;
             document.querySelectorAll('.color-picker').forEach(p => p.classList.remove('active-legend'));
@@ -203,8 +186,7 @@
 
         function fillCell(el) {
             const page = pages[activeIdx];
-            const hexColor = rgbToHex(el.style.backgroundColor);
-            if (hexColor.toUpperCase() === currentColor.toUpperCase()) {
+            if (rgbToHex(el.style.backgroundColor).toUpperCase() === currentColor.toUpperCase()) {
                 el.style.backgroundColor = "#fff";
                 delete page.cells[el.id];
             } else {
@@ -214,24 +196,27 @@
             saveToLocal();
         }
 
-        function deleteCurrentPage() {
-            if (pages.length <= 1) return alert("至少保留一页哦！");
-            if (confirm("确定删除这一页吗？")) {
-                pages.splice(activeIdx, 1);
-                activeIdx = 0;
-                saveAndRefresh();
-            }
-        }
-
-        function saveToLocal() {
-            localStorage.setItem('pixelAppData', JSON.stringify(pages));
-        }
-
-        function saveAndRefresh() {
+        function updateCurrentPageTitle() {
+            pages[activeIdx].title = document.getElementById('title').value;
             saveToLocal();
-            init();
+            renderTabs();
         }
 
+        function updateLegendData(index, type, value) {
+            if(type === 'color') pages[activeIdx].legendColors[index] = value;
+            else pages[activeIdx].legendTexts[index] = value;
+            saveToLocal();
+        }
+
+        function deleteCurrentPage() {
+            if (pages.length <= 1 || !confirm("确定删除吗？")) return;
+            pages.splice(activeIdx, 1);
+            activeIdx = 0;
+            saveAndRefresh();
+        }
+
+        function saveToLocal() { localStorage.setItem('pixelAppData', JSON.stringify(pages)); }
+        function saveAndRefresh() { saveToLocal(); init(); }
         function rgbToHex(rgb) {
             if (!rgb || rgb.startsWith("#")) return rgb || "";
             const vals = rgb.match(/\d+/g);
